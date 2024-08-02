@@ -29,7 +29,7 @@ http
             }
             console.log("Saved!");
 
-            fs.writeFile("mynewfile3.txt", "This is my text", function (err) {
+            fs.writeFile("mynewfile.txt", "This is my text", function (err) {
               if (err) {
                 res.writeHead(500, { "Content-Type": "text/html" });
                 return res.end(
@@ -37,12 +37,23 @@ http
                 );
               }
 
-              res.writeHead(200, { "Content-Type": "text/html" });
-              res.write(data1);
-              res.write(data2);
-              res.write(data3);
+              fs.unlink('mynewfile3.txt', function (err) {
+                if (err) {
+                    res.writeHead(500, { "Content-Type": "text/html" });
+                return res.end(
+                  "500 Internal Server Error: Unable to append to file"
+                );
+                }
+                res.writeHead(200, { "Content-Type": "text/html" });
+                res.write(data1);
+                res.write(data2);
+                res.write(data3);
+  
+                return res.end()
+                console.log('File deleted!');
+              });
 
-              return res.end();
+             ;
             });
           });
         });
