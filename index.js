@@ -40,3 +40,20 @@ function list(...args) {
   
   console.log(sumArray([1, 2, 3, 4, 5])); // Output: 15
   
+
+
+  const module = {
+    x: 42,
+    getX: function () {
+      return this.x;
+    },
+  };
+  
+  const unboundGetX = module.getX;
+  console.log(unboundGetX()); // The function gets invoked at the global scope
+  // Expected output: undefined
+  
+  const boundGetX = unboundGetX.bind(module);
+  console.log(boundGetX());
+  // Expected output: 42
+  
