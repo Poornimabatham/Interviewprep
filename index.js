@@ -1,63 +1,30 @@
-var http = require("http");
-var fs = require("fs");
+const express = require('express');
+const path = require('path');
+const app = express();
 
-http
-  .createServer(function (req, res) {
-    fs.readFile("mynewfile1.txt", function (err, data1) {
-      if (err) {
-        res.writeHead(404, { "Content-Type": "text/html" });
-        return res.end("404 Not Found");
-      }
+app.get('/home', (req, res) => {
 
-      fs.readFile("demofile2.html", function (err, data2) {
-        if (err) {
-          res.writeHead(404, { "Content-Type": "text/html" });
-          return res.end("404 Not Found");
-        }
-        fs.readFile("demoFile3.html", function (err, data3) {
-          if (err) {
-            res.writeHead(404, { "Content-Type": "text/html" });
-            return res.end("404 Not Found");
-          }
+  // Sending our index.html file as 
+  // response. In path.join() method
+  // __dirname is the directory where
+  // our app.js file is present. In 
+  // this case __dirname is the root
+  // folder of the project.
+  res.sendFile(path.join(__dirname, '/public/index.html'));
+});
 
-          fs.appendFile("mynewfile1.txt", "Hello content!", function (err) {
-            if (err) {
-              res.writeHead(500, { "Content-Type": "text/html" });
-              return res.end(
-                "500 Internal Server Error: Unable to append to file"
-              );
-            }
-            console.log("Saved!");
+app.get('/products', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/products.html'));
+});
 
-            fs.writeFile("mynewfile.txt", "This is my text", function (err) {
-              if (err) {
-                res.writeHead(500, { "Content-Type": "text/html" });
-                return res.end(
-                  "500 Internal Server Error: Unable to append to file"
-                );
-              }
 
-              fs.unlink('mynewfile3.txt', function (err) {
-                if (err) {
-                    res.writeHead(500, { "Content-Type": "text/html" });
-                return res.end(
-                  "500 Internal Server Error: Unable to append to file"
-                );
-                }
-                res.writeHead(200, { "Content-Type": "text/html" });
-                res.write(data1);
-                res.write(data2);
-                res.write(data3);
-  
-                return res.end()
-                console.log('File deleted!');
-              });
 
-             ;
-            });
-          });
-        });
-      });
-    });
-  })
-  .listen(8080);
+
+app.get('/ContactUs', (req, res) => {
+  res.sendFile(path.join(__dirname, 'demoFile3.html'));
+});
+
+
+app.listen(3000, () => {
+  console.log('Server is up on port 3000');
+});
